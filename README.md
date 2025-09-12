@@ -7,67 +7,88 @@
 - [Checkov](https://www.checkov.io/) Checkov scans cloud infrastructure configurations to find misconfigurations before they're deployed.
 - [Slack](https://slack.com/) Slack is a communication platform designed for collaboration which can be leveraged to build and develop a very robust DevOps culture. Will be used for Continuous feedback loop.
 
-1) Create a GitHub Repository with the name `Terraform-CICD-Pipeline-Project` and push the code in this branch(main) to 
-    your remote repository (your newly created repository). 
-    - Go to GitHub: https://github.com
-    - Login to `Your GitHub Account`
-    - Create a Repository called `Terraform-CICD-Pipeline-Project`
-    - Clone the Repository in the `Repository` directory/folder on your `local machine`
-    - Download the code in in this repository `"Main branch"`: https://github.com/awanmbandi/realworld-cicd-pipeline-project.git
-    - `Unzip` the `code/zipped file`
-    - `Copy` and `Paste` everything `from the zipped file` into the `repository you cloned` in your local
-    - Open your `Terminal`
-        - Add the code to git, commit and push it to your upstream branch "main or master"
-        - Add the changes: `git add -A`
-        - Commit changes: `git commit -m "adding project source code"`
-        - Push to GitHub: `git push`
-    - Confirm that the code is now available on GitHub as shown below...
-    ![ProjectRepositoryCode!](https://github.com/awanmbandi/realworld-cicd-pipeline-project/blob/zdocs/images/dsdsdsdgdghhgjkyutyrtegdgdr.png)
+# Complete Terraform Jenkins CI/CD Pipeline Project
 
-2) Create An IAM Profile/Role For The Jenkins Environment
-- Create an EC2 Service Role in IAM with `AdministratorAccess` Privilege 
-- Navigate to IAM
-![IAM!](https://github.com/awanmbandi/realworld-cicd-pipeline-project/blob/zdocs/images/Screen%20Shot%202023-10-03%20at%206.20.44%20PM.png)
-    - Click on `Roles`
-    - Click on `Create Role`
-    - Select `Service Role`
-    - Use Case: Select `EC2`
-    - Click on `Next` 
-    - Attach Policy: `AdministratorAccess`
-    - Click `Next` 
-    - Role Name: `AWS-AdministratorAccess-Role`
-    - Click `Create`
+A full end-to-end CI/CD pipeline built using Terraform and Jenkins, designed to provision infrastructure, build, test, and deploy applications in AWS, with automated scans and alerts integrated.
 
-3) Jenkins
-    - Create a Jenkins VM instance 
-    - Name: `Jenkins-CI`
-    - AMI: `Amazon Linux 2`
-    - Instance type: `t2.medium`
-    - Key pair: `Select` or `create a new keypair`
-    - Security Group (Edit/Open): `8080` and `22` to `0.0.0.0/0`
-    - IAM instance profile: Select the `AWS-AdministratorAccess-Role`
-    - User data (Copy the following user data): https://github.com/awanmbandi/realworld-cicd-pipeline-project/blob/terraform-jenkins-cicd-pipeline-project/installations/jenkins-install.sh
-    - Launch Instance
+---
 
-4) Slack 
-    - Go to the bellow Workspace and create a Private Slack Channel and name it "yourfirstname-jenkins-cicd-pipeline-alerts"
-    - Link: https://join.slack.com/t/jjtechtowerba-zuj7343/shared_invite/zt-24mgawshy-EhixQsRyVuCo8UD~AbhQYQ  
-      - You can either join through the browser or your local Slack App
-      - Create a `Private Channel` using the naming convention `YOUR_INITIAL-terraform-cicd-alerts`
-        - **NOTE:** *`(The Channel Name Must Be Unique, meaning it must be available for use)`*
-      - Visibility: Select `Private`
-      - Click on the `Channel Drop Down` and select `Integrations` and Click on `Add an App`
-      - Search for `Jenkins` and Click on `View`
-      - Click on `Configuration/Install` and Click `Add to Slack` 
-      - On Post to Channel: Click the Drop Down and select your channel above `YOUR_INITIAL-terraform-cicd-alerts`
-      - Click `Add Jenkins CI Integration`
-      - Scrol Down and Click `SAVE SETTINGS/CONFIGURATIONS`
-      - Leave this page open
-      ![SlackConfig!](https://github.com/awanmbandi/realworld-cicd-pipeline-project/raw/zdocs/images/Screen%20Shot%202023-04-26%20at%202.08.55%20PM.png)
+## Table of Contents
 
-5) Install Plugins
-- Snyk 
-- Slack
-- Blue Ocean
-- Pipeline: Stage View
+- [Overview](#overview)  
+- [Features](#features)  
+- [Architecture](#architecture)  
+- [Prerequisites](#prerequisites)  
+- [Getting Started](#getting-started)  
+- [Project Structure](#project-structure)  
+- [Security & Compliance](#security--compliance)  
+- [Notifications & Monitoring](#notifications--monitoring)  
+- [Contributing](#contributing)  
+- [License](#license)  
+
+---
+
+## Overview
+
+This project provides a robust CI/CD pipeline which automates:
+
+- Infrastructure provisioning in AWS using Terraform (VPCs, S3, RDS, Security Groups, etc.)  
+- Setting up Jenkins server (on EC2) to act as the CI/CD orchestrator  
+- Automated code build, test, and deployment through Jenkins pipelines  
+- Security and compliance gates (e.g. scanning Terraform configs for misconfigurations)  
+- Notification integrations (e.g. Slack alerts) for feedback loops  
+
+The goal is to deliver a reproducible, maintainable, and secure deployment pipeline.
+
+---
+
+## Features
+
+- Infrastructure as Code (IaC) with Terraform  
+- Modular configuration for components: VPC, S3, RDS, Security Groups, etc.  
+- Jenkins server provisioning and configuration  
+- CI/CD pipeline stages: build → test → deploy  
+- Security scanning tools such as Checkov & Snyk  
+- Slack notifications for pipeline status/alerts  
+
+---
+
+## Architecture
+
+Here’s a high-level view of how things are laid out:
+
+1. **GitHub**: stores Terraform code, Jenkinsfile, and all configurations.  
+2. **Terraform**: used to provision AWS infrastructure (networking, storage, databases, IAM, etc.).  
+3. **Jenkins (on EC2)**:  
+   - Executes pipeline defined in `Jenkinsfile`.  
+   - Runs Terraform apply/destroy, application build / test / deploy.  
+   - Plugins: Slack, Blue Ocean, Stage View, etc.  
+4. **Security / Compliance**:  
+   - Checkov scans Terraform code before applying.  
+   - Snyk can be used for dependency / vulnerability scanning.  
+5. **Notifications**: Slack channel(s) configured to receive alerts for pipeline failures or important events.
+
+---
+
+## Prerequisites
+
+Ensure you have the following before you begin:
+
+- AWS account with permissions to provision necessary resources (EC2, IAM, RDS, VPC, etc.)  
+- Terraform installed locally (version ≥ *insert version*)  
+- Jenkins-compatible instance (AMI/OS) or knowledge of setting up Jenkins in EC2  
+- Git and GitHub account access  
+- Slack workspace (if using Slack notifications)  
+- Access / keys / IAM roles for managing AWS infrastructure  
+
+---
+
+## Getting Started
+
+Below are the steps to get the pipeline up and running.
+
+1. **Clone this repository**  
+   ```bash
+   git clone https://github.com/akupheaws/Complete-Terraform-Jenkins-CICD-Pipeline-Project.git
+   cd Complete-Terraform-Jenkins-CICD-Pipeline-Project
 
