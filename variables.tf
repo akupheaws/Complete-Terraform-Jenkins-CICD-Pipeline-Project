@@ -27,7 +27,7 @@ variable "subnet_id" {
 variable "key_name" {
   type        = string
   description = "provide an existing keypair"
-  default = "mbandiofficial-nova"
+  default = "devops"
 }
 
 variable "user_data" {
